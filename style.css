@@ -1,0 +1,554 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+}
+
+canvas#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #1a1a2e;
+}
+
+/* HUD Styling */
+#hud {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    z-index: 100;
+}
+
+/* Minimap */
+#minimap-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 200px;
+    height: 200px;
+    border: 3px solid #FFD700;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#minimap {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#player-indicator {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #FFD700;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px #FFD700;
+}
+
+/* Health & Armor */
+#health-armor {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #FFD700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.health-bar,
+.armor-bar {
+    width: 150px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #FFD700;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+#health-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #ff0000, #ff6600);
+    transition: width 0.2s;
+}
+
+#armor-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #00ccff, #0099ff);
+    transition: width 0.2s;
+}
+
+#health-text,
+#armor-text {
+    font-size: 11px;
+    color: #FFD700;
+}
+
+/* Wanted Level */
+#wanted-level {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat-label {
+    font-size: 14px;
+}
+
+#wanted-stars {
+    font-size: 24px;
+    color: #ff0000;
+    letter-spacing: 3px;
+    min-height: 30px;
+}
+
+#wanted-text {
+    font-size: 12px;
+    color: #FFD700;
+}
+
+/* Money */
+#money {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: #00ff00;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    letter-spacing: 2px;
+}
+
+#money-text {
+    margin-left: 10px;
+}
+
+/* Weapon Info */
+#weapon-info {
+    position: fixed;
+    bottom: 150px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border: 2px solid #FFD700;
+    border-radius: 5px;
+    min-width: 150px;
+}
+
+#weapon-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #FFD700;
+}
+
+#weapon-name {
+    font-size: 14px;
+    color: #FFD700;
+    text-transform: uppercase;
+}
+
+#ammo-display {
+    font-size: 16px;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+#weapon-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.weapon-slot {
+    font-size: 11px;
+    color: #aaa;
+    padding: 5px;
+    border-left: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.weapon-slot:hover,
+.weapon-slot.active {
+    color: #FFD700;
+    border-left-color: #FFD700;
+    background: rgba(255, 215, 0, 0.1);
+}
+
+/* Location & Time */
+#location-info {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 14px;
+    color: #FFD700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#time {
+    font-size: 12px;
+    color: #aaa;
+}
+
+/* Interaction Prompt */
+#interaction-prompt {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #FFD700;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #FFD700;
+    text-align: center;
+    animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        box-shadow: 0 0 10px #FFD700;
+    }
+    to {
+        box-shadow: 0 0 20px #FFD700;
+    }
+}
+
+/* Mission Objective */
+#mission-objective {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-left: 4px solid #FFD700;
+    padding: 15px;
+    max-width: 300px;
+    border-radius: 2px;
+}
+
+#mission-title {
+    font-size: 16px;
+    color: #FFD700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+#mission-text {
+    font-size: 13px;
+    color: #fff;
+    line-height: 1.4;
+}
+
+/* Menu Overlay */
+#menu-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(0, 0, 0, 0.95));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#menu-content {
+    text-align: center;
+    color: #FFD700;
+}
+
+#menu-content h1 {
+    font-size: 48px;
+    margin-bottom: 40px;
+    text-shadow: 3px 3px 0px #000, -1px -1px 0px rgba(255, 255, 0, 0.3);
+    letter-spacing: 2px;
+}
+
+#menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+button {
+    padding: 15px 40px;
+    font-size: 18px;
+    background: rgba(255, 215, 0, 0.1);
+    color: #FFD700;
+    border: 2px solid #FFD700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    transition: all 0.3s;
+    border-radius: 2px;
+}
+
+button:hover {
+    background: #FFD700;
+    color: #000;
+    box-shadow: 0 0 20px #FFD700;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Shop Overlay */
+#shop-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+}
+
+#shop-content {
+    background: rgba(26, 26, 46, 0.95);
+    padding: 30px;
+    border: 3px solid #FFD700;
+    border-radius: 5px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#shop-content h2 {
+    color: #FFD700;
+    margin-bottom: 20px;
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+#shop-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.shop-item {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #FFD700;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 2px;
+}
+
+.shop-item:hover {
+    background: rgba(255, 215, 0, 0.1);
+    box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.shop-item-name {
+    color: #FFD700;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.shop-item-price {
+    color: #00ff00;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Mission Select */
+#mission-select {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+}
+
+#mission-content {
+    background: rgba(26, 26, 46, 0.95);
+    padding: 30px;
+    border: 3px solid #FFD700;
+    border-radius: 5px;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#mission-content h2 {
+    color: #FFD700;
+    margin-bottom: 20px;
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+#missions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mission-item {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #FFD700;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 2px;
+}
+
+.mission-item:hover,
+.mission-item.completed {
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.mission-item.completed {
+    border-color: #00ff00;
+}
+
+.mission-name {
+    color: #FFD700;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.mission-desc {
+    color: #aaa;
+    font-size: 12px;
+}
+
+.mission-reward {
+    color: #00ff00;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Loading Screen */
+#loading-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.98), rgba(0, 0, 0, 0.98));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+}
+
+#loading-content {
+    text-align: center;
+    color: #FFD700;
+}
+
+#loading-content h1 {
+    font-size: 48px;
+    margin-bottom: 40px;
+    text-shadow: 3px 3px 0px #000;
+    letter-spacing: 2px;
+}
+
+#loading-bar {
+    width: 300px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #FFD700;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+#loading-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #FFD700, #ffed4e);
+    transition: width 0.1s;
+}
+
+#loading-text {
+    font-size: 16px;
+    color: #FFD700;
+    letter-spacing: 1px;
+}
+
+/* Debug Info */
+#debug-info {
+    position: fixed;
+    top: 50px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border: 1px solid #00ff00;
+    border-radius: 2px;
+    font-size: 12px;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    z-index: 500;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FFD700;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ffed4e;
+}
