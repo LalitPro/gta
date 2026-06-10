@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTA Style Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- HUD (Head-Up Display) -->
+    <div id="hud">
+        <!-- Minimap -->
+        <div id="minimap-container">
+            <canvas id="minimap" width="200" height="200"></canvas>
+            <div id="player-indicator"></div>
+        </div>
+
+        <!-- Health & Armor -->
+        <div id="health-armor">
+            <div class="stat-container">
+                <span class="stat-label">Health</span>
+                <div class="health-bar">
+                    <div id="health-fill"></div>
+                </div>
+                <span id="health-text">100</span>
+            </div>
+            <div class="stat-container">
+                <span class="stat-label">Armor</span>
+                <div class="armor-bar">
+                    <div id="armor-fill"></div>
+                </div>
+                <span id="armor-text">0</span>
+            </div>
+        </div>
+
+        <!-- Wanted Level -->
+        <div id="wanted-level">
+            <span class="stat-label">WANTED</span>
+            <div id="wanted-stars"></div>
+            <span id="wanted-text">0★</span>
+        </div>
+
+        <!-- Money -->
+        <div id="money">
+            <span class="stat-label">$</span>
+            <span id="money-text">$5000</span>
+        </div>
+
+        <!-- Weapon Info -->
+        <div id="weapon-info">
+            <div id="weapon-display">
+                <span id="weapon-name">Fists</span>
+                <span id="ammo-display">∞</span>
+            </div>
+            <div id="weapon-list">
+                <div class="weapon-slot" data-weapon="fists" data-ammo="∞">Fists (∞)</div>
+                <div class="weapon-slot" data-weapon="pistol" data-ammo="30">9mm (0)</div>
+                <div class="weapon-slot" data-weapon="smg" data-ammo="30">SMG (0)</div>
+                <div class="weapon-slot" data-weapon="rifle" data-ammo="30">Rifle (0)</div>
+                <div class="weapon-slot" data-weapon="shotgun" data-ammo="8">Shotgun (0)</div>
+            </div>
+        </div>
+
+        <!-- Location & Time -->
+        <div id="location-info">
+            <span id="location">Downtown</span>
+            <span id="time">12:00</span>
+        </div>
+
+        <!-- Interaction Prompt -->
+        <div id="interaction-prompt" style="display: none;">
+            <span id="interaction-text"></span>
+        </div>
+
+        <!-- Mission Objective -->
+        <div id="mission-objective" style="display: none;">
+            <div id="mission-title">Mission</div>
+            <div id="mission-text">Destroy the target</div>
+        </div>
+
+        <!-- Radar/Objective -->
+        <div id="objective-marker" style="display: none;"></div>
+    </div>
+
+    <!-- Game Canvas -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Menu Overlay -->
+    <div id="menu-overlay" style="display: none;">
+        <div id="menu-content">
+            <h1>GTA: City Stories</h1>
+            <div id="menu-buttons">
+                <button id="start-game-btn">Start Game</button>
+                <button id="continue-game-btn">Continue</button>
+                <button id="settings-btn">Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Overlay -->
+    <div id="shop-overlay" style="display: none;">
+        <div id="shop-content">
+            <h2>SHOP</h2>
+            <div id="shop-items"></div>
+            <button id="close-shop-btn">Exit Shop</button>
+        </div>
+    </div>
+
+    <!-- Mission Select -->
+    <div id="mission-select" style="display: none;">
+        <div id="mission-content">
+            <h2>MISSIONS</h2>
+            <div id="missions-list"></div>
+            <button id="close-mission-btn">Back</button>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div id="loading-content">
+            <h1>GTA: City Stories</h1>
+            <div id="loading-bar">
+                <div id="loading-fill"></div>
+            </div>
+            <p id="loading-text">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Debug Info -->
+    <div id="debug-info" style="display: none;">
+        <div>FPS: <span id="fps">60</span></div>
+        <div>Pos: <span id="pos">0, 0</span></div>
+        <div>Vel: <span id="vel">0, 0</span></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
